@@ -7,7 +7,6 @@ import { useState } from "react";
 import type { DraftExpense, Value } from "../types";
 import ErrorMessage from "./ErrorMessage";
 import { useBudget } from "../hooks/useBudget";
-import { stat } from "fs";
 
 export default function ExpenseForm() {
   const [expense, setExpense] = useState<DraftExpense>({
