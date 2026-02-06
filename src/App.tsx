@@ -13,8 +13,7 @@ function App() {
 
     localStorage.setItem('budget', state.budget.toString())
     localStorage.setItem('expenses',JSON.stringify(state.expenses))
-  }
-    , [state])
+  }    , [state])
 
   return (
     <>
