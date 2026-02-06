@@ -13,6 +13,7 @@ type BudgetProviderProps= {
 }
 
 //{} as BudgetContextProps
+
 export const BudgetContext = createContext<BudgetContextProps>(null!)
 
 export const BudgetProvider = ({children}:BudgetProviderProps) => {
