@@ -9,6 +9,7 @@ import ErrorMessage from "./ErrorMessage";
 import { useBudget } from "../hooks/useBudget";
 
 export default function ExpenseForm() {
+  
   const [expense, setExpense] = useState<DraftExpense>({
     amount: 0,
     expenseName: "",
@@ -17,14 +18,17 @@ export default function ExpenseForm() {
   });
 
   const [error, setError] = useState("");
-  const { dispatch, state } = useBudget();
+  const[previousAmount, setPreviousAmount] = useState(0)
+  const { dispatch, state,remainingBudget } = useBudget();
 
   useEffect(() => {
     if (state.editingId) {
       const editingExpense = state.expenses.filter(
         (currentExpense) => currentExpense.id === state.editingId,
       )[0];
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setExpense(editingExpense);
+      setPreviousAmount(editingExpense.amount)
     }
   }, [state.editingId]);
 
@@ -59,6 +63,12 @@ export default function ExpenseForm() {
       return;
     }
 
+    //Validar que no me pase del limite
+    if ((expense.amount - previousAmount)> remainingBudget) {
+      setError("Ese Gasto se sale del Presupuesto");
+      return;
+    }
+
     //Agregar o actualizar el gasto
     if (state.editingId) {
       dispatch({
@@ -76,7 +86,15 @@ export default function ExpenseForm() {
       category: "",
       date: new Date(),
     });
+
+    setPreviousAmount(0)
   };
+
+   const onFocus = (e : React.FocusEvent<HTMLInputElement, HTMLInputElement>) =>{
+
+    e.target.select()
+
+  }
 
   return (
     <form className="space-y-5" onSubmit={handeSubmit}>
@@ -113,6 +131,7 @@ export default function ExpenseForm() {
           name="amount"
           value={expense.amount}
           onChange={handleChange}
+          onFocus={onFocus}
         />
       </div>
 

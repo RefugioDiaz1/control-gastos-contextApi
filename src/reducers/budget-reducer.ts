@@ -8,7 +8,8 @@ export type BudgetActions =
   | { type: "add-expense"; payload: { expense: DraftExpense } }
   | { type: "remove-expense"; payload: { id: Expense["id"] } }
   | { type: "get-expense-by-id"; payload: { id: Expense["id"] } }
-  | { type: "update-expense"; payload: { expense: Expense } };
+  | { type: "update-expense"; payload: { expense: Expense } }
+  | { type: "clean-expenses" }
 
 export interface BudgetState {
   budget: number;
@@ -105,6 +106,16 @@ export const budgetReducer = (
           ? action.payload.expense
           : expense,
       ),
+      editingId: "",
+    };
+  }
+
+  if (action.type === "clean-expenses") {
+    return {
+      ...state,
+      budget: 0,
+      modal: false,
+      expenses: [],
       editingId: "",
     };
   }

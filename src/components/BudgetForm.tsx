@@ -31,6 +31,7 @@ export default function BudgetForm() {
     
 
   }
+  
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
